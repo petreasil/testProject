@@ -10,15 +10,41 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { login, reset } from "../store/auth/authSlice";
+import { useSnackbar } from "notistack";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Login = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    
   });
 
-  const {  password, email } = formData;
+  const { password, email } = formData;
+  const { enqueueSnackbar } = useSnackbar();
+  const navigate = useNavigate();
+  const dispach = useDispatch();
+  const { user, isLoading, isSucess, isError, message } = useSelector(
+    (state) => state.auth
+  );
+
+  useEffect(() => {
+    if (isError) {
+      enqueueSnackbar(message, { variant: "error", autoHideDuration: 2000 });
+      //alert(message);
+    }
+    if (isSucess || user) {
+      enqueueSnackbar("Login Success", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+      navigate("/");
+    }
+    dispach(reset());
+  }, [user, isError, isSucess, message, dispach, navigate, enqueueSnackbar]);
+
   const onChange = (e) => {
     console.log(e.target.value);
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -26,8 +52,27 @@ const Login = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    if (!email || !password) {
+      enqueueSnackbar("Please provide email and password", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
+    } else {
+      const userData = {
+        email,
+        password,
+      };
+      dispach(login(userData));
+    }
   };
 
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex", alignItems: "center" }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />

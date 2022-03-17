@@ -16,6 +16,8 @@ import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { register, reset } from "../store/auth/authSlice";
+import { useSnackbar } from "notistack";
+import CircularProgress from "@mui/material/CircularProgress";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +30,7 @@ const Register = () => {
   });
 
   const { firstName, lastName, password, password2, status, email } = formData;
+  const { enqueueSnackbar } = useSnackbar();
 
   const navigate = useNavigate();
   const dispach = useDispatch();
@@ -42,18 +45,27 @@ const Register = () => {
 
   useEffect(() => {
     if (isError) {
-      alert(message);
+      enqueueSnackbar(message, { variant: "error", autoHideDuration: 2000 });
+      //alert(message);
     }
     if (isSucess || user) {
+      enqueueSnackbar("Account Created", {
+        variant: "success",
+        autoHideDuration: 2000,
+      });
       navigate("/");
     }
     dispach(reset());
-  }, [user, isError, isSucess, message, dispach, navigate]);
+  }, [user, isError, isSucess, message, dispach, navigate, enqueueSnackbar]);
 
   const onSubmit = (e) => {
     e.preventDefault();
     if (password !== password2) {
-      alert("Password do not match");
+      enqueueSnackbar("Password do not match", {
+        variant: "error",
+        autoHideDuration: 2000,
+      });
+      //alert("Password do not match");
     } else {
       const userData = {
         user,
@@ -64,8 +76,12 @@ const Register = () => {
     }
   };
 
-  if(isLoading){
-    return <h1>Loading</h1>
+  if (isLoading) {
+    return (
+      <Box sx={{ display: "flex" }}>
+        <CircularProgress />
+      </Box>
+    );
   }
 
   return (

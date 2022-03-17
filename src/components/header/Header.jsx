@@ -15,7 +15,7 @@ const Header = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
+  console.log(user)
   const onLogout = () => {
     dispatch(logout());
     dispatch(reset());
@@ -38,6 +38,7 @@ const Header = () => {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Sport Center
           </Typography>
+        
           {user ? (
             <Button color="inherit" onClick={onLogout}>
               Logout
