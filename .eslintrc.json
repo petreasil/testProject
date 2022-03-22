@@ -1,0 +1,45 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "plugin:react/recommended"],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
+  "globals": {
+    "__API_ENDPOINT__": true,
+    "__REFRESH_TOKEN_INTERVAL__": true,
+    "ENVIRONMENT": true,
+    "process.env": true
+  },
+  "rules": {
+    "linebreak-style": "off",
+    "no-plusplus": "off",
+    "no-underscore-dangle": "off",
+    "import/extensions": "off",
+    "react/no-array-index-key": "off",
+    "react/jsx-tag-spacing": "off",
+    "import/prefer-default-export": "off",
+    "no-shadow": [1, { "allow": ["done", "err", "error", "next"] }],
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "quotes": [1, "single"],
+    "max-len": [
+      2,
+      120,
+      2,
+      {
+        "ignoreUrls": true,
+        "ignoreComments": false
+      }
+    ],
+    "consistent-return": "off",
+    "jsx-a11y/label-has-for": "off",
+    "no-param-reassign": "off"
+  }
+}

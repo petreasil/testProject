@@ -1,32 +1,32 @@
-import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { register, reset } from "../store/auth/authSlice";
-import { useSnackbar } from "notistack";
-import CircularProgress from "@mui/material/CircularProgress";
+import React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { register, reset } from '../store/auth/authSlice';
+import { useSnackbar } from 'notistack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Register = () => {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
-    password2: "",
-    status: "",
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
+    password2: '',
+    status: '',
   });
 
   const { firstName, lastName, password, password2, status, email } = formData;
@@ -45,15 +45,15 @@ const Register = () => {
 
   useEffect(() => {
     if (isError) {
-      enqueueSnackbar(message, { variant: "error", autoHideDuration: 2000 });
+      enqueueSnackbar(message, { variant: 'error', autoHideDuration: 2000 });
       //alert(message);
     }
     if (isSucess || user) {
-      enqueueSnackbar("Account Created", {
-        variant: "success",
+      enqueueSnackbar('Account Created', {
+        variant: 'success',
         autoHideDuration: 2000,
       });
-      navigate("/");
+      navigate('/');
     }
     dispach(reset());
   }, [user, isError, isSucess, message, dispach, navigate, enqueueSnackbar]);
@@ -61,8 +61,8 @@ const Register = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (password !== password2) {
-      enqueueSnackbar("Password do not match", {
-        variant: "error",
+      enqueueSnackbar('Password do not match', {
+        variant: 'error',
         autoHideDuration: 2000,
       });
       //alert("Password do not match");
@@ -78,7 +78,7 @@ const Register = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: 'flex' }}>
         <CircularProgress />
       </Box>
     );
@@ -90,13 +90,15 @@ const Register = () => {
       <Box
         sx={{
           marginTop: 8,
-          marginBottom: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Typography component="h1" variant="h4">
+          Sports Center App
+        </Typography>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -177,9 +179,9 @@ const Register = () => {
                 onChange={onChange}
                 required
               >
-                <MenuItem value={"admin"}>admin</MenuItem>
-                <MenuItem value={"user"}>user</MenuItem>
-                <MenuItem value={"trainer"}>trainer</MenuItem>
+                <MenuItem value={'admin'}>admin</MenuItem>
+                <MenuItem value={'user'}>user</MenuItem>
+                <MenuItem value={'trainer'}>trainer</MenuItem>
               </Select>
             </Grid>
           </Grid>

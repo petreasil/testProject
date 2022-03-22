@@ -1,46 +1,31 @@
-import CssBaseline from "@mui/material/CssBaseline";
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import Layout from './pages/Layout';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import Dashboard from './pages/Dashboard';
+import RequireAuth from './components/Requireauth/RequireAuth';
 
-import { Routes, Route } from "react-router-dom";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import Header from "./components/header/Header";
-import { createTheme, ThemeProvider } from "@material-ui/core";
-import { purple } from "@material-ui/core/colors";
-import Leftbar from "./components/Leftbar/Leftbar";
-import { Grid } from "@mui/material";
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: "#fefefe",
-    },
-    secondary: purple,
-  },
-});
+const ROLES = {
+  User: 'ROLE_USER',
+  Trainer: 'ROLE_TRAINER',
+  Admin: 'ROLE_ADMIN',
+};
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Header />
-      <Grid container>
-        <Grid item sm={2} xs={2}>
-          <Leftbar />
-        </Grid>
-        <Grid item sm={10}>
-          <Routes>
-            <Route path="/" >
-            <Route index element={<Dashboard/> }/>
-            <Route path="login" element={<Login />} /> 
-            <Route path="register" element={<Register />} />     
-            </Route>
-            {/*<Route path="/login" element={<Login />}></Route>
-            <Route path="/register" element={<Register />}></Route>*/}
-          </Routes>
-        </Grid>
-      </Grid>
-    </ThemeProvider>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        {/*Public Routes*/}
+        <Route path="login" element={<Login />} />
+        <Route path="register" element={<Register />} />
+
+        {/*Private  Routes*/}
+        <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
+          <Route path="/" element={<Dashboard />} />
+        </Route>
+      </Route>
+    </Routes>
   );
 }
 

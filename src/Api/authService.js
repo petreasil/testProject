@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 
-const API_URL = "https://reqres.in/api/";
+const API_URL = 'http://sport-center-app.herokuapp.com/api/';
 
 //register user
 const register = async (userData) => {
-    const response = await axios.post(API_URL+"register", userData);
+    const response = await axios.post(API_URL+'register', userData);
 
     if(response.data){
         localStorage.setItem('user', JSON.stringify(response.data))
@@ -13,9 +13,13 @@ const register = async (userData) => {
 
     return response.data
 }
-//register user
+//login user
 const login = async (userData) => {
-    const response = await axios.post(API_URL+"login", userData);
+    console.log(userData);
+    //let queryString = Object.keys(userData).reduce((acc,item)=> `&${acc}${item}=${userData[item]}`,`?`);
+    const queryString = Object.keys(userData).map(( key ) => `${key}=${userData[key]}`).join('&');
+
+    const response = await axios.post(API_URL+'login'+`?${queryString}`, userData);
 
     if(response.data){
         localStorage.setItem('user', JSON.stringify(response.data))

@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from 'axios';
 
 
-const API_URL = "https://reqres.in/api/";
+const API_URL = 'https://reqres.in/api/';
 
 //get all Programs
 const getProgram = async (token) => {
@@ -11,7 +11,7 @@ const getProgram = async (token) => {
         },
       }
 
-      const response = await axios.get(API_URL+"unknown", config)
+      const response = await axios.get(API_URL+'unknown', config)
 
     return response.data
 }

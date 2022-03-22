@@ -1,12 +1,11 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import App from "./App";
-import { store } from "./store/store";
-import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import reportWebVitals from "./reportWebVitals";
-import { SnackbarProvider } from "notistack";
-import Slide from "@material-ui/core/Slide";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from './App';
+import { store } from './store/store';
+import { Provider } from 'react-redux';
+import { BrowserRouter,Route,Routes } from 'react-router-dom';
+import { SnackbarProvider } from 'notistack';
+import Slide from '@material-ui/core/Slide';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,20 +13,20 @@ ReactDOM.render(
       <Provider store={store}>
         <SnackbarProvider
           anchorOrigin={{
-            vertical: "top",
-            horizontal: "center",
+            vertical: 'top',
+            horizontal: 'center',
           }}
           TransitionComponent={Slide}
         >
-          <App />
+          <Routes>
+            <Route path='/*' element={<App />}/>
+          </Routes>
+          
         </SnackbarProvider>
       </Provider>
     </BrowserRouter>
   </React.StrictMode>,
-  document.getElementById("root")
+  document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+

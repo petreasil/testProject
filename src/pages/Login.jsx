@@ -1,25 +1,25 @@
-import React from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { login, reset } from "../store/auth/authSlice";
-import { useSnackbar } from "notistack";
-import CircularProgress from "@mui/material/CircularProgress";
+import React from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { login, reset } from '../store/auth/authSlice';
+import { useSnackbar } from 'notistack';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    password: "",
+    email: '',
+    password: '',
   });
 
   const { password, email } = formData;
@@ -32,15 +32,15 @@ const Login = () => {
 
   useEffect(() => {
     if (isError) {
-      enqueueSnackbar(message, { variant: "error", autoHideDuration: 2000 });
+      enqueueSnackbar(message, { variant: 'error', autoHideDuration: 2000 });
       //alert(message);
     }
     if (isSucess || user) {
-      enqueueSnackbar("Login Success", {
-        variant: "success",
+      enqueueSnackbar('Login Success', {
+        variant: 'success',
         autoHideDuration: 2000,
       });
-      navigate("/");
+      navigate('/');
     }
     dispach(reset());
   }, [user, isError, isSucess, message, dispach, navigate, enqueueSnackbar]);
@@ -53,8 +53,8 @@ const Login = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
-      enqueueSnackbar("Please provide email and password", {
-        variant: "success",
+      enqueueSnackbar('Please provide email and password', {
+        variant: 'success',
         autoHideDuration: 2000,
       });
     } else {
@@ -68,9 +68,13 @@ const Login = () => {
 
   if (isLoading) {
     return (
-      <Box sx={{ display: "flex", alignItems: "center" }}>
-        <CircularProgress />
-      </Box>
+      <Grid container>
+        <Grid item xs={12}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <CircularProgress />
+          </Box>
+        </Grid>
+      </Grid>
     );
   }
   return (
@@ -80,12 +84,15 @@ const Login = () => {
         sx={{
           marginTop: 8,
           marginBottom: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+        <Typography component="h1" variant="h4">
+          Sports Center App
+        </Typography>
+        <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
@@ -135,7 +142,7 @@ const Login = () => {
             </Grid>
             <Grid item>
               <Link href="/register" variant="body2">
-                {"Don't have an account? Register"}
+                {'Don\'t have an account? Register'}
               </Link>
             </Grid>
           </Grid>

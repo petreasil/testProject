@@ -1,13 +1,13 @@
-import React from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import Link from "@mui/material/Link";
-import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { logout, reset } from "../../store/auth/authSlice";
+import React from 'react';
+import AppBar from '@mui/material/AppBar';
+import Box from '@mui/material/Box';
+import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
+import { useSelector, useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { logout, reset } from '../../store/auth/authSlice';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Header = () => {
   const onLogout = () => {
     dispatch(reset());
     dispatch(logout());
-    navigate("/login");
+    navigate('/login');
   };
 
   return (
