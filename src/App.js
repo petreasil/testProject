@@ -3,8 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './pages/Layout';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Dashboard from './pages/Dashboard';
 import RequireAuth from './components/Requireauth/RequireAuth';
+import Unauthorized from './pages/Unauthorized';
+import NotFound from './pages/NotFound';
+import DashboardContent from './pages/DashboardContent';
 
 const ROLES = {
   User: 'ROLE_USER',
@@ -19,11 +21,14 @@ function App() {
         {/*Public Routes*/}
         <Route path="login" element={<Login />} />
         <Route path="register" element={<Register />} />
+        <Route path="unauthorized" element={<Unauthorized />} />
 
         {/*Private  Routes*/}
         <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<DashboardContent />} />
         </Route>
+        {/*404*/}
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );
