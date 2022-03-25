@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React,{useState} from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -8,6 +8,11 @@ import Button from '@mui/material/Button';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
+import { format } from 'date-fns'
+import {useDispatch} from 'react-redux'
+import { createProgram } from '../../store/program/programSlice';
+
+
 
 const style = {
   position: 'absolute',
@@ -22,8 +27,29 @@ const style = {
 };
 
 export default function ModalForm(props) {
-    const [value, setValue] = React.useState(new Date());
+  const [startsAt, setStartsAt] = useState(new Date());
+  const [endsAt, setEndsAt] = useState(new Date());
+  const [program,setProgram] = useState('');
+  const dispatch = useDispatch();
+
+  const onSubmit = (e)=>{
+    e.preventDefault()
+    const pattern = "MM/dd/yyyy hh/mm aaaaa'm'";
+    const start = format(startsAt,pattern)
+    const end = format(endsAt,pattern)
     
+    const data={
+        name:program,
+        startsAt: start,
+        endsAt: end
+    }
+    dispatch(createProgram(data))
+    const dismiss = () => props.onClose();
+    dismiss();
+    
+    console.log(data)
+
+  }
   return (
     <div>
       <Modal
@@ -32,50 +58,41 @@ export default function ModalForm(props) {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={style} component="form" noValidate onSubmit={onSubmit}>
           <Typography component="h1" variant="h5" gutterBottom align="center">
-            Add
+            Add Program
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12}>
               <TextField
                 required
                 fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
+                id="program"
+                label="Program Name"
+                name="program"
+                autoComplete="text"
+                value={program}
+                onChange={(e)=>setProgram(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="password"
-              />
-            </Grid>
-            <Grid item xs={12}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
-                label="Start From"
-                value={value}
-                onChange={(newValue)=>setValue(newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  label="Start From"
+                  value={startsAt}
+                  onChange={(newValue) => setStartsAt(newValue)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
               </LocalizationProvider>
             </Grid>
             <Grid item xs={12}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DateTimePicker
-                label="To"
-                value={value}
-                onChange={(newValue)=>setValue(newValue)}
-                renderInput={(params) => <TextField {...params} />}
-              />
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <DateTimePicker
+                  label="To"
+                  value={endsAt}
+                  onChange={(newValue) => setEndsAt(newValue)}
+                  renderInput={(params) => <TextField {...params} />}
+                />
               </LocalizationProvider>
             </Grid>
           </Grid>
@@ -84,7 +101,7 @@ export default function ModalForm(props) {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-          >
+            >
             Add new Program
           </Button>
         </Box>

@@ -19,8 +19,8 @@ const getProgram = async (token) => {
   return response.data;
 };
 
-//create all Programs
-const createProgram = async (token,programId) => {
+//create  Programs
+const createProgram = async (programData,token) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -29,8 +29,8 @@ const createProgram = async (token,programId) => {
       'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
     },
   };
-
-  const response = await axios.post(API_URL + 'programs'+programId, config);
+  console.log(programData)
+  const response = await axios.post(API_URL + 'programs',programData, config);
 
   return response.data;
 };
