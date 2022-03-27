@@ -7,6 +7,7 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: '',
+  programToEdit: undefined,
 };
 //Get all Programs
 export const getPrograms = createAsyncThunk(
@@ -64,11 +65,35 @@ export const deleteProgram = createAsyncThunk(
   }
 );
 
+//edit program
+export const editProgram = createAsyncThunk(
+  'program/editbyid',
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      const { id } = data;
+      const token = thunkAPI.getState().auth.user.token;
+      return await programService.editProgramId(id, data, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+
 export const programSlice = createSlice({
   name: 'program',
   initialState,
   reducers: {
     reset: (state) => initialState,
+    edit: (state, action) => {
+      state.programToEdit = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -114,9 +139,28 @@ export const programSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+      })
+      .addCase(editProgram.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editProgram.fulfilled, (state, action) => {
+        console.log(action.payload);
+        const findRec = state.programs.map((program) =>
+          program.id === action.payload.id ? action.payload : program
+        );
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.programs = findRec;
+        state.programToEdit = undefined;
+      })
+      .addCase(editProgram.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
       });
   },
 });
 
-export const { reset } = programSlice.actions;
+export const { reset, edit } = programSlice.actions;
 export default programSlice.reducer;

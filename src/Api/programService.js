@@ -35,9 +35,25 @@ const createProgram = async (programData,token) => {
   return response.data;
 };
 
+//edit  Programs
+const editProgramId = async (id,programData,token) => {
+  console.log(id,programData)
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+    },
+  };
+ 
+  const response = await axios.put(API_URL + 'programs/'+`${id}`,programData, config);
+
+  return response.data;
+};
+
 // Delete Program
 const deleteProgram = async (programData, token) => {
-  console.log(programData)
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -55,7 +71,8 @@ const deleteProgram = async (programData, token) => {
 const programService = {
   getProgram,
   deleteProgram,
-  createProgram
+  createProgram,
+  editProgramId
 };
 
 export default programService;

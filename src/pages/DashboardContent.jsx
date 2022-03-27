@@ -7,7 +7,6 @@ import ProgramItem from '../components/ProgramItem/ProgramItem';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
-import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -25,10 +24,11 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import ModalForm from '../components/Forms/ModalForm';
+import { openModal,closeModal } from '../store/Modal/modalSlice';
 
 const drawerWidth = 240;
 
-const AppBar = styled(MuiAppBar, {
+/*const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -44,7 +44,7 @@ const AppBar = styled(MuiAppBar, {
       duration: theme.transitions.duration.enteringScreen,
     }),
   }),
-}));
+}));*/
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -76,6 +76,7 @@ const mdTheme = createTheme();
 
 function DashboardContent() {
   const { user } = useSelector((state) => state.auth);
+  const {isOpen} = useSelector((state=> state.modal));
   const { programs, isLoading, isError, message } = useSelector(
     (state) => state.programs
   );
@@ -97,9 +98,7 @@ function DashboardContent() {
 
 
   const [open, setOpen] = React.useState(true);
-  const [openModal, setOpenModal] = React.useState(false);
-  const handleOpen = () => setOpenModal(true);
-  const handleClose = () => setOpenModal(false);
+  
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -165,10 +164,10 @@ function DashboardContent() {
                   >
                     Active Programs
                   </Typography>
-                  <Button variant="text" size="small" onClick={handleOpen}>
+                  <Button variant="text" size="small" onClick={() =>dispatch(openModal(true))}>
                     Add new
                   </Button>
-                  <ModalForm open={openModal} onClose={handleClose} />
+                  <ModalForm open={isOpen} onClose={()=>dispatch(closeModal(false))} />
                   <Table aria-label="simple table" size="small">
                     <TableHead>
                       <TableRow>

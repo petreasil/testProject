@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState, useEffect } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
@@ -8,11 +8,14 @@ import Button from '@mui/material/Button';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import { format } from 'date-fns'
-import {useDispatch} from 'react-redux'
-import { createProgram } from '../../store/program/programSlice';
-
-
+import { format } from 'date-fns';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  createProgram,
+  edit,
+  editProgram,
+} from '../../store/program/programSlice';
+import { closeModal } from '../../store/Modal/modalSlice';
 
 const style = {
   position: 'absolute',
@@ -26,41 +29,74 @@ const style = {
   p: 4,
 };
 
-export default function ModalForm(props) {
+export default function ModalForm() {
   const [startsAt, setStartsAt] = useState(new Date());
   const [endsAt, setEndsAt] = useState(new Date());
-  const [program,setProgram] = useState('');
+  const [program, setProgram] = useState('');
   const dispatch = useDispatch();
+  const { programToEdit } = useSelector((state) => state.programs);
+  const { isOpen } = useSelector((state) => state.modal);
 
-  const onSubmit = (e)=>{
-    e.preventDefault()
-    const pattern = "MM/dd/yyyy hh/mm aaaaa'm'";
-    const start = format(startsAt,pattern)
-    const end = format(endsAt,pattern)
-    
-    const data={
-        name:program,
-        startsAt: start,
-        endsAt: end
+  const clearForm = () => {
+    setProgram('');
+    setStartsAt(new Date());
+    setEndsAt(new Date());
+  };
+
+  useEffect(() => {
+    if (programToEdit) {
+      setProgram(programToEdit.name);
+      setStartsAt(programToEdit.startsAt);
+      setEndsAt(programToEdit.endsAt);
     }
-    dispatch(createProgram(data))
-    const dismiss = () => props.onClose();
-    dismiss();
-    
-    console.log(data)
+  }, [programToEdit]);
 
-  }
+  const onSubmit = (e) => {
+    e.preventDefault();
+    const pattern = 'MM/dd/yyyy hh/mm aaaaa\'m\'';
+    const start = format(startsAt, pattern);
+    const end = format(endsAt, pattern);
+
+    if (programToEdit) {
+      const { id } = programToEdit;
+      const data = {
+        id: Number(id),
+        name: program,
+        startsAt: start,
+        endsAt: end,
+      };
+      console.log(id,data)
+      dispatch(editProgram( data));
+      const dismiss = () => dispatch(closeModal(false));
+     dismiss();
+      
+    } else {
+      const data = {
+        name: program,
+        startsAt: start,
+        endsAt: end,
+      };
+      dispatch(createProgram(data));
+      const dismiss = () => dispatch(closeModal(false));
+      dismiss();
+      console.log(data);
+    }
+  };
   return (
     <div>
       <Modal
-        open={props.open}
-        onClose={() => props.onClose()}
+        open={isOpen}
+        onClose={() => {
+          dispatch(closeModal(false));
+          dispatch(edit(undefined));
+          clearForm();
+        }}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
         <Box sx={style} component="form" noValidate onSubmit={onSubmit}>
           <Typography component="h1" variant="h5" gutterBottom align="center">
-            Add Program
+            {!programToEdit ? 'Add Program' : 'Edit Program'}
           </Typography>
           <Grid container spacing={2}>
             <Grid item xs={12}>
@@ -72,7 +108,7 @@ export default function ModalForm(props) {
                 name="program"
                 autoComplete="text"
                 value={program}
-                onChange={(e)=>setProgram(e.target.value)}
+                onChange={(e) => setProgram(e.target.value)}
               />
             </Grid>
             <Grid item xs={12}>
@@ -101,8 +137,8 @@ export default function ModalForm(props) {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            >
-            Add new Program
+          >
+            {!programToEdit ? 'Add new Program' : 'Edit Program'}
           </Button>
         </Box>
       </Modal>
