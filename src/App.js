@@ -6,7 +6,12 @@ import Register from './pages/Register';
 import RequireAuth from './components/Requireauth/RequireAuth';
 import Unauthorized from './pages/Unauthorized';
 import NotFound from './pages/NotFound';
-import DashboardContent from './pages/DashboardContent';
+import Home from './pages/Home';
+import TableContent from './components/Table/TableContent';
+import UserContent from './components/Users/UserContent';
+
+//import DashboardUser from '../src/components/DashboardUser/DashboadUser'
+//import DashboardContent from './pages/DashboardContent';
 
 const ROLES = {
   User: 'ROLE_USER',
@@ -25,7 +30,12 @@ function App() {
 
         {/*Private  Routes*/}
         <Route element={<RequireAuth allowedRoles={[ROLES.User]} />}>
-          <Route path="/" element={<DashboardContent />} />
+          <Route path="/" element={<Home/>}>
+            <Route path="program" element={<TableContent/>}/>
+            <Route path="users" element={<UserContent/>}/>
+           <Route/> 
+          </Route> 
+          
         </Route>
         {/*404*/}
         <Route path="*" element={<NotFound />} />
