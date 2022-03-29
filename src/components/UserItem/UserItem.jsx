@@ -7,9 +7,13 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { deleteUser } from '../../store/user/userSlice';
 
 const UserItem = (props) => {
   const { name, avatar, email, program, id } = props;
+  const dispatch = useDispatch();
+
   return (
     <>
       <Grid item xs={4}>
@@ -32,8 +36,10 @@ const UserItem = (props) => {
             </Typography>
           </CardContent>
           <CardActions>
-            <Button size="small">Share</Button>
-            <Button size="small">Learn More</Button>
+            <Button size="small" onClick={() => dispatch(deleteUser(id))}>
+              Delete
+            </Button>
+            <Button size="small">More</Button>
           </CardActions>
         </Card>
       </Grid>
@@ -45,6 +51,6 @@ UserItem.propTypes = {
   name: PropTypes.string,
   email: PropTypes.string,
   avatar: PropTypes.string,
-  program: PropTypes.string,
+  program: PropTypes.any,
 };
 export default UserItem;

@@ -9,6 +9,7 @@ import NotFound from './pages/NotFound';
 import Home from './pages/Home';
 import TableContent from './components/Table/TableContent';
 import UserContent from './components/Users/UserContent';
+import UserForm from './components/UserForm/UserForm';
 
 //import DashboardUser from '../src/components/DashboardUser/DashboadUser'
 //import DashboardContent from './pages/DashboardContent';
@@ -33,6 +34,7 @@ function App() {
           <Route path="/" element={<Home/>}>
             <Route path="program" element={<TableContent/>}/>
             <Route path="users" element={<UserContent/>}/>
+            <Route path="newuser" element={<UserForm/>}/>
            <Route/> 
           </Route> 
           
