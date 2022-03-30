@@ -8,8 +8,8 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { Form } from 'react-final-form';
 import { TextField, makeValidate } from 'mui-rff';
-import { useDispatch } from 'react-redux';
-import { createUser } from '../../store/user/userSlice';
+import { useDispatch,useSelector } from 'react-redux';
+import { createUser , editUser} from '../../store/user/userSlice';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -18,6 +18,9 @@ export default function UserForm() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
+  const prefiledData = useSelector(state=> state.form.form);
+  console.log(prefiledData)
+
 
   let schema = yup.object().shape({
     name: yup.string().required(),
@@ -30,13 +33,26 @@ export default function UserForm() {
 
   // yes, this can even be async!
   async function onSubmit(values, form) {
-    dispatch(createUser(values));
-    enqueueSnackbar('User Added', {
+    console.log(values)
+    if(!prefiledData){
+        dispatch(createUser(values));
+        enqueueSnackbar('User Added', {
+          variant: 'success',
+          autoHideDuration: 2000,
+        });
+        navigate('/users');
+        form.reset(); 
+    } else {
+    dispatch(editUser(values));
+    enqueueSnackbar('User Edited', {
       variant: 'success',
       autoHideDuration: 2000,
     });
     navigate('/users');
     form.reset();
+
+    }
+    
 
   }
 
@@ -44,6 +60,7 @@ export default function UserForm() {
     <Form
       onSubmit={onSubmit}
       validate={validate}
+      initialValues={prefiledData}
       render={({ handleSubmit, submitting, pristine }) => (
         <Container component="main" maxWidth="xs">
           <CssBaseline />
@@ -59,7 +76,7 @@ export default function UserForm() {
               <AddAPhotoIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
-              Add new User
+              {prefiledData ? 'Edit User': 'Add new User'}
             </Typography>
             <Box
               component="form"
@@ -115,7 +132,7 @@ export default function UserForm() {
                 sx={{ mt: 3, mb: 2 }}
                 disabled={submitting || pristine}
               >
-                Add new User
+                {prefiledData ? 'Edit User' : 'Add new User'}
               </Button>
             </Box>
           </Box>

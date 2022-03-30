@@ -9,11 +9,20 @@ import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { deleteUser } from '../../store/user/userSlice';
+import { useNavigate } from 'react-router-dom';
+import { add } from '../../store/FormSlice/formSlice';
 
 const UserItem = (props) => {
   const { name, avatar, email, program, id } = props;
   const dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const dataRecord = {
+    name,
+    id,
+    email,
+    program,
+    avatar,
+  }
   return (
     <>
       <Grid item xs={4}>
@@ -39,6 +48,11 @@ const UserItem = (props) => {
             <Button size="small" onClick={() => dispatch(deleteUser(id))}>
               Delete
             </Button>
+            <Button size="small"onClick={()=> {
+              console.log(id,name,email,program);
+              dispatch(add(dataRecord));
+              navigate('/newuser');
+            }}>Edit</Button>
             <Button size="small">More</Button>
           </CardActions>
         </Card>

@@ -33,7 +33,7 @@ const addUser = async (userData,token) => {
     return response.data;
   };
 
-  // Delete Program
+  // Delete User
 const deleteUser = async (userData, token) => {
     const config = {
       headers: {
@@ -49,10 +49,29 @@ const deleteUser = async (userData, token) => {
     return response.data;
   };
 
+  //edit  Programs
+const editUserId = async (id,userData,token) => {
+    console.log(id,userData)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+      },
+    };
+   
+    const response = await axios.put(API_URL + 'users/'+`${id}`,userData, config);
+  
+    return response.data;
+  };
+
 const userService = {
   getUsers,
   addUser,
-  deleteUser
+  deleteUser,
+  editUserId,
+
 };
 
 export default userService;

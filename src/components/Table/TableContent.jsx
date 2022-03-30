@@ -14,14 +14,11 @@ import { openModal, closeModal } from '../../store/Modal/modalSlice';
 import ModalForm from '../../components/Forms/ModalForm';
 import ProgramItem from '../ProgramItem/ProgramItem';
 
-
-
 const TableContent = () => {
   const { user } = useSelector((state) => state.auth);
   const { isOpen } = useSelector((state) => state.modal);
   const { programs } = useSelector((state) => state.programs);
   const dispatch = useDispatch();
-
 
   return (
     <>
@@ -86,6 +83,12 @@ const TableContent = () => {
           >
             <Typography variant="body1" gutterBottom>
               Email: {user?.user.email}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              CNP: {user?.user.cnp}
+            </Typography>
+            <Typography variant="body1" gutterBottom>
+              Name: {user?.user.name}
             </Typography>
 
             <Button variant="outlined" size="medium">

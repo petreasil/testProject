@@ -64,7 +64,26 @@ export const getUsers = createAsyncThunk(
       }
     }
   )
-
+//edit program
+export const editUser = createAsyncThunk(
+  'users/editbyid',
+  async (data, thunkAPI) => {
+    try {
+      console.log(data);
+      const { id } = data;
+      const token = thunkAPI.getState().auth.user.token;
+      return await userService.editUserId(id, data, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
 export const userSlice = createSlice({
     name:'users',
     initialState,
@@ -107,7 +126,25 @@ export const userSlice = createSlice({
           state.isLoading = false;
           state.isError = true;
           state.message = action.payload;
+        }).addCase(editUser.pending, (state) => {
+          state.isLoading = true;
         })
+        .addCase(editUser.fulfilled, (state, action) => {
+          console.log(action.payload);
+          const findRecord = state.users.map((user) =>
+            user.id === action.payload.id ? action.payload : user
+          );
+          state.isLoading = false;
+          state.isSuccess = true;
+          state.programs = findRecord;
+          
+        })
+        .addCase(editUser.rejected, (state, action) => {
+          console.log(action.payload);
+          state.isLoading = false;
+          state.isError = true;
+          state.message = action.payload;
+        });
     }
 })
 
