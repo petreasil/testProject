@@ -90,7 +90,7 @@ export const programSlice = createSlice({
   name: 'program',
   initialState,
   reducers: {
-    reset: (state) => initialState,
+    reset: () => initialState,
     edit: (state, action) => {
       state.programToEdit = action.payload;
     },
