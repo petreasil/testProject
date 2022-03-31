@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import UserItem from '../UserItem/UserItem';
 import SpeedDial from '../SpeedDial/SpeedDial';
 
+
 const UserContent = () => {
   const { users } = useSelector((state) => state.users);
   return (
@@ -15,14 +16,16 @@ const UserContent = () => {
         sx={{ padding: '5px' }}
       >
         Active users: {users?.length}
-       
       </Typography>
-      <SpeedDial/>
+      <SpeedDial />
       <Grid container spacing={2}>
         {users.map((user) => (
+ 
           <UserItem key={user.id} {...user} />
+    
         ))}
       </Grid>
+
     </>
   );
 };

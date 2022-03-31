@@ -53,10 +53,13 @@ const UserItem = (props) => {
               dispatch(add(dataRecord));
               navigate('/newuser');
             }}>Edit</Button>
-            <Button size="small">More</Button>
+            <Button size="small" onClick={()=> navigate(`/users/${id}`)}>More</Button>
+            
           </CardActions>
         </Card>
+     
       </Grid>
+     
     </>
   );
 };
