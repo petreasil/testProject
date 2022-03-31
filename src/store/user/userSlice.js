@@ -7,63 +7,65 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: '',
-}
+  displayData: [],
+  searchValue: '',
+};
 //get all users
 export const getUsers = createAsyncThunk(
-    'users/getAll',
-    async (_, thunkAPI) => {
-      try {
-        const token = thunkAPI.getState().auth.user.token;
-        return await userService.getUsers(token);
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        return thunkAPI.rejectWithValue(message);
-      }
+  'users/getAll',
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await userService.getUsers(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
-  );
+  }
+);
 
-  //create user
-  export const createUser = createAsyncThunk(
-    'users/create',
-    async (userData, thunkAPI) => {
-      try {
-        const token = thunkAPI.getState().auth.user.token;
-        return await userService.addUser(userData, token);
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        return thunkAPI.rejectWithValue(message);
-      }
+//create user
+export const createUser = createAsyncThunk(
+  'users/create',
+  async (userData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await userService.addUser(userData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
-  );
+  }
+);
 
-  //delete user
-  export const deleteUser = createAsyncThunk(
-    'users/delete',
-    async (userData, thunkAPI) => {
-      try {
-        const token = thunkAPI.getState().auth.user.token;
-        return await userService.deleteUser(userData, token);
-      } catch (error) {
-        const message =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-        return thunkAPI.rejectWithValue(message);
-      }
+//delete user
+export const deleteUser = createAsyncThunk(
+  'users/delete',
+  async (userData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await userService.deleteUser(userData, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
     }
-  )
+  }
+);
 //edit program
 export const editUser = createAsyncThunk(
   'users/editbyid',
@@ -85,67 +87,86 @@ export const editUser = createAsyncThunk(
   }
 );
 export const userSlice = createSlice({
-    name:'users',
-    initialState,
-    extraReducers:(builder)=>{
-        builder.addCase(getUsers.pending, (state)=>{
-            state.isLoading = true
-        }).addCase(getUsers.fulfilled, (state,action)=>{
-            state.isLoading = false;
-            state.isSuccess = true;
-            state.users = action.payload
-        }).addCase(getUsers.rejected, (state,action)=>{
-            state.isLoading = false;
-            state.isError = true;
-            state.message = action.payload;
-        }).addCase(createUser.pending, (state) => {
-          state.isLoading = true;
-        })
-        .addCase(createUser.fulfilled, (state, action) => {
-          console.log(action.payload);
-          state.isLoading = false;
-          state.isSuccess = true;
-          state.users.push(action.payload);
-        })
-        .addCase(createUser.rejected, (state, action) => {
-          console.log(action.payload);
-          state.isLoading = false;
-          state.isError = true;
-          state.message = action.payload;
-        }).addCase(deleteUser.pending, (state) => {
-          state.isLoading = true;
-        })
-        .addCase(deleteUser.fulfilled, (state, action) => {
-          state.isLoading = false;
-          state.isSuccess = true;
-          state.users = state.users.filter(
-            (user) => user.id !== action.payload.id
-          );
-        })
-        .addCase(deleteUser.rejected, (state, action) => {
-          state.isLoading = false;
-          state.isError = true;
-          state.message = action.payload;
-        }).addCase(editUser.pending, (state) => {
-          state.isLoading = true;
-        })
-        .addCase(editUser.fulfilled, (state, action) => {
-          console.log(action.payload);
-          const findRecord = state.users.map((user) =>
-            user.id === action.payload.id ? action.payload : user
-          );
-          state.isLoading = false;
-          state.isSuccess = true;
-          state.programs = findRecord;
-          
-        })
-        .addCase(editUser.rejected, (state, action) => {
-          console.log(action.payload);
-          state.isLoading = false;
-          state.isError = true;
-          state.message = action.payload;
-        });
-    }
-})
+  name: 'users',
+  initialState,
+  reducers: {
+    searchFilter: (state, action) => {
+      state.searchValue = action.payload;
+      console.log(action.payload);
+      const filtredData = state.searchValue
+        ? state.users.filter((user) =>
+            user.name.toLowerCase().includes(action.payload)
+          )
+        : state.users;
+        state.displayData = filtredData;
+    },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUsers.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getUsers.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = action.payload;
+        state.displayData= state.users;
+      })
+      .addCase(getUsers.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(createUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createUser.fulfilled, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users.push(action.payload);
+      })
+      .addCase(createUser.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(deleteUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteUser.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.users = state.users.filter(
+          (user) => user.id !== action.payload.id
+        );
+      })
+      .addCase(deleteUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(editUser.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editUser.fulfilled, (state, action) => {
+        console.log(action.payload);
+        const findRecord = state.users.map((user) =>
+          user.id === action.payload.id ? action.payload : user
+        );
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.programs = findRecord;
+      })
+      .addCase(editUser.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      });
+  },
+});
 
+export const { searchFilter } = userSlice.actions;
 export default userSlice.reducer;
