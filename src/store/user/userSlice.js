@@ -7,8 +7,6 @@ const initialState = {
   isSuccess: false,
   isLoading: false,
   message: '',
-  displayData: [],
-  searchValue: '',
 };
 //get all users
 export const getUsers = createAsyncThunk(
@@ -89,18 +87,6 @@ export const editUser = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'users',
   initialState,
-  reducers: {
-    searchFilter: (state, action) => {
-      state.searchValue = action.payload;
-      console.log(action.payload);
-      const filtredData = state.searchValue
-        ? state.users.filter((user) =>
-            user.name.toLowerCase().includes(action.payload)
-          )
-        : state.users;
-        state.displayData = filtredData;
-    },
-  },
   extraReducers: (builder) => {
     builder
       .addCase(getUsers.pending, (state) => {
@@ -110,7 +96,7 @@ export const userSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = true;
         state.users = action.payload;
-        state.displayData= state.users;
+        state.displayData = state.users;
       })
       .addCase(getUsers.rejected, (state, action) => {
         state.isLoading = false;
@@ -168,5 +154,5 @@ export const userSlice = createSlice({
   },
 });
 
-export const { searchFilter } = userSlice.actions;
+
 export default userSlice.reducer;
