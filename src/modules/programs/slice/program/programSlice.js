@@ -1,20 +1,39 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import userService from '../../Api/userService';
+import programService from '../../api/programService';
 
 const initialState = {
-  users: [],
+  programs: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
   message: '',
+  programToEdit: undefined,
 };
-//get all users
-export const getUsers = createAsyncThunk(
-  'users/getAll',
+//Get all Programs
+export const getPrograms = createAsyncThunk(
+  'programs/getAll',
   async (_, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await userService.getUsers(token);
+      return await programService.getProgram(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
+  }
+);
+//create Program
+export const createProgram = createAsyncThunk(
+  'program/create',
+  async (programData, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await programService.createProgram(programData, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -27,13 +46,13 @@ export const getUsers = createAsyncThunk(
   }
 );
 
-//create user
-export const createUser = createAsyncThunk(
-  'users/create',
-  async (userData, thunkAPI) => {
+// Delete program
+export const deleteProgram = createAsyncThunk(
+  'program/delete',
+  async (id, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await userService.addUser(userData, token);
+      return await programService.deleteProgram(id, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -46,33 +65,15 @@ export const createUser = createAsyncThunk(
   }
 );
 
-//delete user
-export const deleteUser = createAsyncThunk(
-  'users/delete',
-  async (userData, thunkAPI) => {
-    try {
-      const token = thunkAPI.getState().auth.user.token;
-      return await userService.deleteUser(userData, token);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
-  }
-);
 //edit program
-export const editUser = createAsyncThunk(
-  'users/editbyid',
+export const editProgram = createAsyncThunk(
+  'program/editbyid',
   async (data, thunkAPI) => {
     try {
       console.log(data);
       const { id } = data;
       const token = thunkAPI.getState().auth.user.token;
-      return await userService.editUserId(id, data, token);
+      return await programService.editProgramId(id, data, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -84,68 +85,75 @@ export const editUser = createAsyncThunk(
     }
   }
 );
-export const userSlice = createSlice({
-  name: 'users',
+
+export const programSlice = createSlice({
+  name: 'program',
   initialState,
+  reducers: {
+    reset: () => initialState,
+    edit: (state, action) => {
+      state.programToEdit = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
-      .addCase(getUsers.pending, (state) => {
+      .addCase(getPrograms.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(getUsers.fulfilled, (state, action) => {
+      .addCase(getPrograms.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.users = action.payload;
-        state.displayData = state.users;
+        state.programs = action.payload;
       })
-      .addCase(getUsers.rejected, (state, action) => {
+      .addCase(getPrograms.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(createUser.pending, (state) => {
+      .addCase(deleteProgram.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createUser.fulfilled, (state, action) => {
-        console.log(action.payload);
+      .addCase(deleteProgram.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.users.push(action.payload);
-      })
-      .addCase(createUser.rejected, (state, action) => {
-        console.log(action.payload);
-        state.isLoading = false;
-        state.isError = true;
-        state.message = action.payload;
-      })
-      .addCase(deleteUser.pending, (state) => {
-        state.isLoading = true;
-      })
-      .addCase(deleteUser.fulfilled, (state, action) => {
-        state.isLoading = false;
-        state.isSuccess = true;
-        state.users = state.users.filter(
-          (user) => user.id !== action.payload.id
+        state.programs = state.programs.filter(
+          (program) => program.id !== action.payload.id
         );
       })
-      .addCase(deleteUser.rejected, (state, action) => {
+      .addCase(deleteProgram.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
       })
-      .addCase(editUser.pending, (state) => {
+      .addCase(createProgram.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(editUser.fulfilled, (state, action) => {
+      .addCase(createProgram.fulfilled, (state, action) => {
         console.log(action.payload);
-        const findRecord = state.users.map((user) =>
-          user.id === action.payload.id ? action.payload : user
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.programs.push(action.payload);
+      })
+      .addCase(createProgram.rejected, (state, action) => {
+        console.log(action.payload);
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(editProgram.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(editProgram.fulfilled, (state, action) => {
+        console.log(action.payload);
+        const findRec = state.programs.map((program) =>
+          program.id === action.payload.id ? action.payload : program
         );
         state.isLoading = false;
         state.isSuccess = true;
-        state.programs = findRecord;
+        state.programs = findRec;
+        state.programToEdit = undefined;
       })
-      .addCase(editUser.rejected, (state, action) => {
+      .addCase(editProgram.rejected, (state, action) => {
         console.log(action.payload);
         state.isLoading = false;
         state.isError = true;
@@ -154,5 +162,5 @@ export const userSlice = createSlice({
   },
 });
 
-
-export default userSlice.reducer;
+export const { reset, edit } = programSlice.actions;
+export default programSlice.reducer;

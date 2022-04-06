@@ -3,8 +3,8 @@ import { useSelector,useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Link from '@mui/material/Link';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { getPrograms,reset } from '../../store/program/programSlice';
-import {getUsers} from '../../store/user/userSlice';
+import { getPrograms,reset } from '../../modules/programs/slice/program/programSlice';
+import {getUsers} from '../../modules/users/slice/user/userSlice';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -65,7 +65,7 @@ const Drawer = styled(MuiDrawer, {
 
 const mdTheme = createTheme();
 
-function DashboardUser(props) {
+const  DashboardUser= (props) => {
   const { user } = useSelector((state) => state.auth);
   const { isError, message,isLoading } = useSelector((state) => state.programs);
   const dispatch = useDispatch();

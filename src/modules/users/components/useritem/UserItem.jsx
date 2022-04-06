@@ -8,9 +8,9 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteUser } from '../../store/user/userSlice';
+import { deleteUser } from '../../slice/user/userSlice';
 import { useNavigate } from 'react-router-dom';
-import { add } from '../../store/FormSlice/formSlice';
+import { add } from '../../slice/formslice/formSlice';
 
 const UserItem = (props) => {
   const { name, avatar, email, program, id } = props;

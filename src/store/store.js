@@ -1,9 +1,10 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authReducer from './auth/authSlice'
-import programReducer from './program/programSlice'
-import modalReducer from './Modal/modalSlice'
-import userReducer from './user/userSlice'
-import formReducer from './FormSlice/formSlice'
+import authReducer from '../modules/login/slice/auth/authSlice'
+import programReducer from '../modules/programs/slice/program/programSlice'
+import modalReducer from '../modules/programs/slice/modal/modalSlice'
+import userReducer from '../modules/users/slice/user/userSlice'
+import formReducer from '../modules/users/slice/formslice/formSlice'
+
 
 
 export const store = configureStore({
@@ -12,7 +13,9 @@ export const store = configureStore({
       programs: programReducer,
       modal: modalReducer,
       users: userReducer,
-      form: formReducer,
+      formTest: formReducer,
+      
+
       
   },
 })

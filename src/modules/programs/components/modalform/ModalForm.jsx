@@ -14,8 +14,8 @@ import {
   createProgram,
   edit,
   editProgram,
-} from '../../store/program/programSlice';
-import { closeModal } from '../../store/Modal/modalSlice';
+} from '../../slice/program/programSlice';
+import { closeModal } from '../../slice/modal/modalSlice';
 
 const style = {
   position: 'absolute',

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import DashboardUser from '../components/DashboardUser/DashboadUser'
+import DashboardUser from '../components/dashboard/DashboadUser'
 
 
 const Home = () => {

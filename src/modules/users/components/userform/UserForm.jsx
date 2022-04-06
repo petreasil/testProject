@@ -9,7 +9,7 @@ import Container from '@mui/material/Container';
 import { Form } from 'react-final-form';
 import { TextField, makeValidate } from 'mui-rff';
 import { useDispatch,useSelector } from 'react-redux';
-import { createUser , editUser} from '../../store/user/userSlice';
+import { createUser , editUser} from '../../slice/user/userSlice';
 import { useSnackbar } from 'notistack';
 import { useNavigate } from 'react-router-dom';
 import * as yup from 'yup';
@@ -18,7 +18,7 @@ export default function UserForm() {
   const dispatch = useDispatch();
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const prefiledData = useSelector(state=> state.form.form);
+  const prefiledData = useSelector(state=> state.formTest.form);
   console.log(prefiledData)
 
 
@@ -61,6 +61,7 @@ export default function UserForm() {
       onSubmit={onSubmit}
       validate={validate}
       initialValues={prefiledData}
+      subscription={{ submitting: true, pristine: true}}
       render={({ handleSubmit, submitting, pristine }) => (
         <Container component="main" maxWidth="xs">
           <CssBaseline />

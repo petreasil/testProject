@@ -6,6 +6,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import PropTypes from 'prop-types';
+import Button from '@mui/material/Button';
 
 const Filter = (props) => {
   const {
@@ -16,6 +17,7 @@ const Filter = (props) => {
     open,
     myopen,
     myclose,
+    myclick
   } = props;
 
   return (
@@ -23,6 +25,8 @@ const Filter = (props) => {
       component="form"
       sx={{
         '& > :not(style)': { m: 1, width: '25ch' },
+        display: 'flex',
+        alignItems: 'center',
       }}
       noValidate
       autoComplete="off"
@@ -47,13 +51,16 @@ const Filter = (props) => {
           onClose={myclose}
           onOpen={myopen}
         >
-          <MenuItem value="">
+          <MenuItem value={defaultValue}>
             <em>None</em>
           </MenuItem>
           <MenuItem value="asc">Asc</MenuItem>
           <MenuItem value="desc">Desc</MenuItem>
         </Select>
       </FormControl>
+      <Button variant="contained" size="small" onClick={()=> myclick()}>
+          Reset
+      </Button>
     </Box>
   );
 };
@@ -65,5 +72,6 @@ Filter.propTypes = {
   open: PropTypes.any,
   myclose: PropTypes.func,
   myopen: PropTypes.func,
+  myclick: PropTypes.func,
 };
 export default Filter;

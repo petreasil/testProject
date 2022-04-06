@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import { useSelector } from 'react-redux';
-import UserItem from '../../modules/users/components/useritem/UserItem';
-import SpeedDial from '../../modules/users/components/speeddial/SpeedDial';
-import Filter from '../../modules/users/components/filter/Filter';
+import UserItem from '../../components/useritem/UserItem';
+import SpeedDial from '../../components/speeddial/SpeedDial';
+import Filter from '../../components/filter/Filter';
 
 const UserContent = () => {
   const { users } = useSelector((state) => state.users);

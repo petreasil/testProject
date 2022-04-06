@@ -10,9 +10,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux';
-import { openModal, closeModal } from '../../modules/programs/slice/modal/modalSlice';
-import ModalForm from '../../modules/programs/components/modalform/ModalForm';
-import ProgramItem from '../../modules/programs/components/programitem/ProgramItem';
+import { openModal, closeModal } from '../../slice/modal/modalSlice';
+import ModalForm from '../modalform/ModalForm';
+import ProgramItem from '../programitem/ProgramItem';
 
 const TableContent = () => {
   const { user } = useSelector((state) => state.auth);

@@ -12,7 +12,7 @@ import Container from '@mui/material/Container';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { login, reset } from '../store/auth/authSlice';
+import { login, reset } from '../modules/login/slice/auth/authSlice';
 import { useSnackbar } from 'notistack';
 import CircularProgress from '@mui/material/CircularProgress';
 

@@ -15,7 +15,7 @@ import Select from '@mui/material/Select';
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { register, reset } from '../store/auth/authSlice';
+import { register, reset } from '../modules/login/slice/auth/authSlice';
 import { useSnackbar } from 'notistack';
 import CircularProgress from '@mui/material/CircularProgress';
 

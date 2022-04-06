@@ -7,13 +7,11 @@ import RequireAuth from './components/Requireauth/RequireAuth';
 import Unauthorized from './pages/Unauthorized';
 import NotFound from './pages/NotFound';
 import Home from './pages/Home';
-import TableContent from './components/Table/TableContent';
-import UserContent from './components/Users/UserContent';
-import UserForm from './components/UserForm/UserForm';
-import SingleUser from './components/User/SingleUser';
+import TableContent from './modules/programs/components/table/TableContent';
+import UserContent from './modules/users/containers/users/UserContent';
+import UserForm from './modules/users/components/userform/UserForm';
+import SingleUser from './modules/users/components/user/SingleUser';
 
-//import DashboardUser from '../src/components/DashboardUser/DashboadUser'
-//import DashboardContent from './pages/DashboardContent';
 
 const ROLES = {
   User: 'ROLE_USER',

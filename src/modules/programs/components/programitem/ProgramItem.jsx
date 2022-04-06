@@ -6,9 +6,9 @@ import TableCell from '@mui/material/TableCell';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { deleteProgram, edit } from '../../store/program/programSlice';
-import { openModal, closeModal } from '../../store/Modal/modalSlice';
-import ModalForm from '../Forms/ModalForm';
+import { deleteProgram, edit } from '../../slice/program/programSlice';
+import { openModal, closeModal } from '../../slice/modal/modalSlice';
+import ModalForm from '../modalform/ModalForm';
 
 const ProgramItem = (props) => {
   const { id, name, startsAt, endsAt } = props;

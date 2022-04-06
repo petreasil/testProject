@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Link from '@mui/material/Link';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { logout, reset } from '../../store/auth/authSlice';
+import { logout, reset } from '../../modules/login/slice/auth/authSlice';
 
 const Header = () => {
   const navigate = useNavigate();
