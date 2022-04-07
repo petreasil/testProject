@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 
-const API_URL = 'http://sport-center-app.herokuapp.com/api/';
+const API_URL = process.env.REACT_APP_BASE_URL;
 
 //register user
 const register = async (userData) => {

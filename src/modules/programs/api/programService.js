@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://623b32422e056d1037eebed1.mockapi.io/api/v1/';
+const API_URL = process.env.REACT_APP_BASE_URL2;
 
 
 //get all Programs
